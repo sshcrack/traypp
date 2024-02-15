@@ -1,5 +1,5 @@
 #if defined(_WIN32)
-#include <Windows.h>
+#include <windows.h>
 #include <core/entry.hpp>
 #include <core/windows/tray.hpp>
 #include <stdexcept>

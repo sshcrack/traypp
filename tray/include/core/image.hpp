@@ -2,7 +2,7 @@
 #include <string>
 #if defined(_WIN32)
 #include "icon.hpp"
-#include <Windows.h>
+#include <windows.h>
 #elif defined(__linux__)
 #include <gtk/gtk.h>
 #endif
