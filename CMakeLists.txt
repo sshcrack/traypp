@@ -1,11 +1,8 @@
 cmake_minimum_required(VERSION 3.1)
 project(tray VERSION 0.2 DESCRIPTION "A cross-platform C++ system tray library")
 
-file(GLOB src
-    "example/simple/main.cpp"
+file(GLOB_RECURSE src
     "tray/src/*.cpp"
-    "tray/src/*/*.cpp"
-    "tray/src/*/*/*.cpp"
 )
 
 add_library(tray STATIC ${src})
