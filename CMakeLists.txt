@@ -7,27 +7,37 @@ file(GLOB_RECURSE src
 
 add_library(tray STATIC ${src})
 
-if (UNIX)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
-    pkg_check_modules(APPINDICATOR REQUIRED ayatana-appindicator3-0.1)
-
-    target_link_libraries(tray INTERFACE ${GTK3_LIBRARIES} ${APPINDICATOR_LIBRARIES})
-
-    if (CMAKE_BUILD_TYPE STREQUAL "Debug")
-        target_compile_options(tray PRIVATE -Wall -Wextra -Werror -pedantic -Wno-unused-lambda-capture)
-    endif()
-    
-    target_include_directories(tray SYSTEM PUBLIC ${GTK3_INCLUDE_DIRS} ${APPINDICATOR_INCLUDE_DIRS} ${PROJECT_SOURCE_DIR})
-endif()
-
-target_include_directories(tray SYSTEM PUBLIC "tray/include")
-
-target_compile_features(tray PRIVATE cxx_std_17)
+# Set C++ standard
+target_compile_features(tray PUBLIC cxx_std_17)
 set_target_properties(tray PROPERTIES 
                       CXX_STANDARD 17
                       CXX_EXTENSIONS OFF
                       CXX_STANDARD_REQUIRED ON)
 
+# Include directories
+target_include_directories(tray PUBLIC "tray/include")
+
+# Platform-specific configuration
+if(UNIX)
+    find_package(PkgConfig REQUIRED)
+    pkg_check_modules(GTK3 REQUIRED gtk+-3.0)
+    pkg_check_modules(APPINDICATOR REQUIRED ayatana-appindicator3-0.1)
+
+    # Debug: Print the found paths
+    message(STATUS "GTK3_INCLUDE_DIRS: ${GTK3_INCLUDE_DIRS}")
+    message(STATUS "APPINDICATOR_INCLUDE_DIRS: ${APPINDICATOR_INCLUDE_DIRS}")
+
+    target_link_libraries(tray PUBLIC ${GTK3_LIBRARIES} ${APPINDICATOR_LIBRARIES})
+    
+    # Add include directories without SYSTEM to ensure they're visible
+    target_include_directories(tray PUBLIC ${GTK3_INCLUDE_DIRS} ${APPINDICATOR_INCLUDE_DIRS})
+
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        target_compile_options(tray PRIVATE -Wall -Wextra -Werror -pedantic -Wno-unused-lambda-capture)
+    endif()
+    
+elseif(WIN32)
+    target_link_libraries(tray PUBLIC shell32 user32)
+endif()
+
 set_target_properties(tray PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(tray PROPERTIES PROJECT_NAME ${PROJECT_NAME})
