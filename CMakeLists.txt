@@ -8,6 +8,7 @@ file(GLOB_RECURSE src
 add_library(tray STATIC ${src})
 
 # Set C++ standard
+set(CMAKE_CXX_STANDARD 17)
 target_compile_features(tray PUBLIC cxx_std_17)
 set_target_properties(tray PROPERTIES 
                       CXX_STANDARD 17

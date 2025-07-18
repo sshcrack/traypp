@@ -11,8 +11,8 @@ namespace Tray
     {
         HWND hwnd = nullptr;
         HMENU menu = nullptr;
-        WNDCLASSEX windowClass;
-        NOTIFYICONDATA notifyData;
+        WNDCLASSEXA windowClass;
+        NOTIFYICONDATAA notifyData;
 
         std::vector<std::shared_ptr<char[]>> allocations;
         static LRESULT CALLBACK wndProc(HWND, UINT, WPARAM, LPARAM);
