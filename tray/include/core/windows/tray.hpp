@@ -28,6 +28,7 @@ namespace Tray
         }
 
         void run() override;
+        void pump() override;
         void exit() override;
         void update() override;
     };

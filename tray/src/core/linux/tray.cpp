@@ -168,4 +168,12 @@ void Tray::Tray::run()
     }
 }
 
+
+void Tray::Tray::pump()
+{
+    if(appIndicator) {
+        gtk_main_iteration_do(true);
+    }
+}
+
 #endif
